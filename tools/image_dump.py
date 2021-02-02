@@ -73,11 +73,11 @@ for imgtype, \
 	print("ityp ftyp id         dev_offset length     addr       entry_off  checksum   version    load_addr")
 	print(f"{unfourcc(imgtype)} {unfourcc(filetype)} 0x{id_:08x} 0x{dev_offset:08x} 0x{length:08x} 0x{addr:08x} 0x{entry_offset:08x} 0x{checksum:08x} 0x{version:08x} 0x{load_addr:08x}")
 	
-	fw_file.seek(dev_offset)
+	fw_file.seek(0x200 + dev_offset)
 	part_data = fw_file.read(length)
 	
-	#checksum_calc = sum(part_data) & 0xFFFFFFFF
-	#print(checksum_calc, checksum, checksum_calc-checksum)
+	checksum_calc = sum(part_data) & 0xFFFFFFFF
+	print(checksum_calc, checksum, checksum_calc-checksum)
 	
 	f = open(f"dump_{unfourcc(filetype)}.bin", "wb")
 	f.write(part_data)
